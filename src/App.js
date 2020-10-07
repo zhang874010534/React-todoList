@@ -1,12 +1,37 @@
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
+import './App.css';
+import axios from 'axios';
+
+import { Input } from 'antd';
+import 'antd/dist/antd.css';
+
+import store from './store/index.js';
+import { CHANGE_INPUT } from './store/actionTypes';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      inputValue: 'hello',
-      list: ['学英语', '写代码']
-    };
+    this.state = store.getState();
+  }
+  shouldComponentUpdate() {
+    // console.log('shouldComponentUpdate');
+    return true;
+  }
+  componentDidMount() {
+    // 注册监听器
+    store.subscribe(() => {
+      this.setState(store.getState());
+    });
+    axios
+      .get('/api/todoList')
+      .then((res) => {
+        this.setState(() => {
+          return {
+            list: res.data
+          };
+        });
+      })
+      .catch(() => {});
   }
   render(h) {
     return (
@@ -26,12 +51,8 @@ class App extends Component {
         >
           {this.state.list.map((item, index) => {
             return (
-              <div>
-                <TodoItem
-                  content={item}
-                  index={index}
-                  deleteList={this.deleteList}
-                ></TodoItem>
+              <div key={index}>
+                <TodoItem content={item} index={index}></TodoItem>
                 {/* <li key={index} data-index={index} onClick={this.deleteList}>
                   {item}
                 </li> */}
@@ -39,37 +60,33 @@ class App extends Component {
             );
           })}
         </ul>
+        {/* 动画 */}
+        <button
+          onClick={this.toggleClass}
+          className={this.state.buttonFlag ? 'show' : 'hide'}
+        >
+          toggle
+        </button>
+        <Input placeholder="basic usage"></Input>
       </Fragment>
     );
   }
   handleInputChange(e) {
-    this.setState(() => {
-      return {
-        inputValue: this.input.value
-      };
-    });
+    const action = {
+      type: CHANGE_INPUT,
+      value: e.target.value
+    };
+    store.dispatch(action);
   }
   handleClick = () => {
-    this.setState(
-      (state) => {
-        return {
-          list: [...state.list, state.inputValue]
-        };
-      },
-      () => {
-        console.log(this.ul.querySelectorAll('div').length);
-      }
-    );
-    // this.setState({
-    //   list: [...this.state.list, this.state.inputValue],
-    //   inputValue: ''
-    // });
+    const action = {
+      type: 'add_todoList_item'
+    };
+    store.dispatch(action);
   };
-  deleteList = (index) => {
-    let list = [...this.state.list];
-    list.splice(index, 1);
+  toggleClass = () => {
     this.setState({
-      list
+      buttonFlag: !this.state.buttonFlag
     });
   };
 }

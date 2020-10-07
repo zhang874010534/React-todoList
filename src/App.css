@@ -1,0 +1,8 @@
+.show {
+  background-color: skyblue;
+  transition: all 4s;
+}
+.hide {
+  background-color: orange;
+  transition: all 4s;
+}
