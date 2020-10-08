@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import TodoItem from './TodoItem';
+import TodoItem2 from './TodoItem2';
 import './App.css';
 import axios from 'axios';
 
@@ -7,7 +8,7 @@ import { Input } from 'antd';
 import 'antd/dist/antd.css';
 
 import store from './store/index.js';
-import { CHANGE_INPUT } from './store/actionTypes';
+import { changeInputAction } from './store/actionCreator';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -56,6 +57,7 @@ class App extends Component {
                 {/* <li key={index} data-index={index} onClick={this.deleteList}>
                   {item}
                 </li> */}
+                <TodoItem2 content={item}></TodoItem2>
               </div>
             );
           })}
@@ -72,11 +74,11 @@ class App extends Component {
     );
   }
   handleInputChange(e) {
-    const action = {
-      type: CHANGE_INPUT,
-      value: e.target.value
-    };
-    store.dispatch(action);
+    // const action = {
+    //   type: CHANGE_INPUT,
+    //   value: e.target.value
+    // };
+    store.dispatch(changeInputAction(e.target.value));
   }
   handleClick = () => {
     const action = {
