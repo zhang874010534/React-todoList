@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import store from './store/index.js';
+import axios from 'axios';
+import { getTodoList } from './store/actionCreator';
 class TodoItem extends Component {
   constructor(props) {
     super(props);
@@ -11,6 +13,11 @@ class TodoItem extends Component {
       return true;
     }
     return false;
+  }
+  componentDidMount() {
+    const action = getTodoList();
+    // 当把action发给store的时候action是会自动执行的
+    store.dispatch(action);
   }
   render() {
     return <div onClick={this.handleClick}>{this.props.content}</div>;
