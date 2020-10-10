@@ -13,5 +13,4 @@ export const getTodoList = () => {
       console.log(res);
     });
   };
-  4;
 };

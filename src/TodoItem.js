@@ -15,8 +15,16 @@ class TodoItem extends Component {
     return false;
   }
   componentDidMount() {
-    const action = getTodoList();
+    // const action = getTodoList();
+    // const action={}
     // 当把action发给store的时候action是会自动执行的
+    // store.dispatch(action);
+    // axios.get('/list.json').then((res) => {
+    //   console.log(res);
+    // });
+    const action = {
+      type: 'get_init_list'
+    };
     store.dispatch(action);
   }
   render() {

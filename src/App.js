@@ -8,7 +8,8 @@ import { Input } from 'antd';
 import 'antd/dist/antd.css';
 
 import store from './store/index.js';
-import { changeInputAction } from './store/actionCreator';
+// import { changeInputAction } from './store/actionCreator';
+import { CHANGE_INPUT } from './store/actionTypes';
 class App extends Component {
   constructor(props) {
     super(props);
@@ -74,11 +75,12 @@ class App extends Component {
     );
   }
   handleInputChange(e) {
-    // const action = {
-    //   type: CHANGE_INPUT,
-    //   value: e.target.value
-    // };
-    store.dispatch(changeInputAction(e.target.value));
+    const action = {
+      type: CHANGE_INPUT,
+      value: e.target.value
+    };
+    // store.dispatch(changeInputAction(e.target.value));
+    store.dispatch(action);
   }
   handleClick = () => {
     const action = {
